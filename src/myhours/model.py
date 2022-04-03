@@ -24,3 +24,6 @@ class Day:
 class Sheet:
     org_filename: Path
     days: dict[datetime, Day] = field(default_factory=dict)
+
+
+SortedWorkDays = dict[datetime, Day]

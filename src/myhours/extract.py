@@ -7,7 +7,7 @@ from openpyxl.cell.cell import Cell
 from openpyxl.worksheet.worksheet import Worksheet
 
 from myhours.console import console, info, warn
-from myhours.model import Day, Sheet
+from myhours.model import Day, Sheet, SortedWorkDays
 from myhours.persist import compose_filename, save_xlsx
 from myhours.validation import validate_days
 
@@ -27,7 +27,7 @@ def process_file(file, output_folder):
     days = extract_days(open_xlsx(file))
     sheet.days = days
 
-    sorted_days = sorted(days.keys())
+    sorted_days = list(days.keys())
     start_day = sorted_days[0]
     end_day = sorted_days[-1]
 
@@ -60,7 +60,11 @@ def open_xlsx(file: Path) -> Worksheet:
     return wb.worksheets[0]
 
 
-def extract_days(sheet: Worksheet) -> dict[datetime, Day]:
+def _sort_dict(data: dict[datetime, Day]) -> SortedWorkDays:
+    return {dt: data[dt] for dt in sorted(data)}
+
+
+def extract_days(sheet: Worksheet) -> SortedWorkDays:
     days: dict[datetime, Day] = {}
     try:
         for row in sheet.iter_rows(min_row=2):
@@ -69,7 +73,8 @@ def extract_days(sheet: Worksheet) -> dict[datetime, Day]:
 
     except EndOfSheet:
         print("Finished.")
-    return days
+
+    return _sort_dict(days)
 
 
 def _get_day(row: list[Cell], days: dict[datetime, Day]) -> Day:
