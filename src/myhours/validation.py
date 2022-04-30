@@ -49,5 +49,7 @@ def validate_start_of_week(days: dict[datetime, Day]) -> list[str]:
     first_day = list(days.keys())[0]
 
     if not first_day.isoweekday() == 1:
-        errors.append(f"First entry is not a monday. Got {first_day.strftime('%A')}")
+        errors.append(
+            f"First entry is not a monday. Got {first_day.strftime('%A')} [{first_day.strftime(DAY_STRING)}]"
+        )
     return errors

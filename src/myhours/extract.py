@@ -44,7 +44,7 @@ def process_file(file, output_folder):
         warn(f"Found {len(errors)} errors")
         for error in errors:
             console.print(f"    {error}")
-            result = console.input(r"   Ignore this error and continue? [y/n]: ")
+            result = console.input("   Ignore this error and continue? (y/n): ")
             if result.lower() == "n":
                 raise typer.Exit()
 

@@ -1,3 +1,4 @@
+from importlib import metadata
 from pathlib import Path
 
 import typer
@@ -6,6 +7,12 @@ from myhours.console import info, warn
 from myhours.extract import process_folder
 
 app = typer.Typer()
+
+
+@app.command()
+def version():
+    """Print the app version"""
+    info(f"Myhours version: {metadata.version(__package__)}")
 
 
 @app.command()
